@@ -11,9 +11,10 @@ using System;
 namespace CommentsAssessmentProject.Migrations
 {
     [DbContext(typeof(DbService))]
-    partial class DbServiceModelSnapshot : ModelSnapshot
+    [Migration("20180705144326_CommentModel - Added IsParent Column")]
+    partial class CommentModelAddedIsParentColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,15 +29,28 @@ namespace CommentsAssessmentProject.Migrations
                     b.Property<string>("Author")
                         .IsRequired();
 
-                    b.Property<string>("CommentContent")
+                    b.Property<string>("Content")
                         .IsRequired()
                         .HasMaxLength(400);
+
+                    b.Property<bool>("IsParent");
+
+                    b.Property<int?>("ParentCommentId");
 
                     b.Property<DateTime>("PostedDateTime");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ParentCommentId");
+
                     b.ToTable("Comments");
+                });
+
+            modelBuilder.Entity("CommentsAssessmentProject.Models.Comment", b =>
+                {
+                    b.HasOne("CommentsAssessmentProject.Models.Comment", "ParentComment")
+                        .WithMany()
+                        .HasForeignKey("ParentCommentId");
                 });
 #pragma warning restore 612, 618
         }

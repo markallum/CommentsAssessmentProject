@@ -6,7 +6,7 @@ using CommentsAssessmentProject.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration; 
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CommentsAssessmentProject
@@ -24,7 +24,9 @@ namespace CommentsAssessmentProject
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DbService>(options => options.UseSqlServer(Configuration.GetConnectionString("CommentsDb")).EnableSensitiveDataLogging());
-            services.AddMvc();
+            services.AddTransient<ICommentService, CommentService>();
+
+            services.AddMvc().AddViewOptions(options => options.HtmlHelperOptions.ClientValidationEnabled = true);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

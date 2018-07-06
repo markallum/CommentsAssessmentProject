@@ -5,29 +5,51 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using CommentsAssessmentProject.Models;
+using CommentsAssessmentProject.Services;
 
 namespace CommentsAssessmentProject.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private ICommentService _commentService;
+
+        public HomeController(ICommentService commentService)
         {
-            return View();
+            _commentService = commentService;
         }
 
-        public IActionResult About()
+        public async Task<IActionResult> Index()
         {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
+            return View(await _commentService.GetComments());
         }
 
-        public IActionResult Contact()
+        [HttpGet]
+        public PartialViewResult Post()
         {
-            ViewData["Message"] = "Your contact page.";
+            Comment comment = new Comment();
 
-            return View();
+            return PartialView("_AddComment");
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Post(Comment comment)
+        {
+            comment.PostedDateTime = DateTime.Now;
+
+            if (ModelState.IsValid)
+            {
+                await _commentService.PostComment(comment);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                // This will only be hit if user has JS turned off
+                return RedirectToAction("Error");
+            }
+            
+            
+        }
+
 
         public IActionResult Error()
         {

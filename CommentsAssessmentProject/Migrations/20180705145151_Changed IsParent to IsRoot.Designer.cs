@@ -11,9 +11,10 @@ using System;
 namespace CommentsAssessmentProject.Migrations
 {
     [DbContext(typeof(DbService))]
-    partial class DbServiceModelSnapshot : ModelSnapshot
+    [Migration("20180705145151_Changed IsParent to IsRoot")]
+    partial class ChangedIsParenttoIsRoot
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,9 +29,13 @@ namespace CommentsAssessmentProject.Migrations
                     b.Property<string>("Author")
                         .IsRequired();
 
-                    b.Property<string>("CommentContent")
+                    b.Property<string>("Content")
                         .IsRequired()
                         .HasMaxLength(400);
+
+                    b.Property<bool>("IsRoot");
+
+                    b.Property<int>("ParentID");
 
                     b.Property<DateTime>("PostedDateTime");
 

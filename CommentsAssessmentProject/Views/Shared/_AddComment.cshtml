@@ -1,0 +1,25 @@
+﻿@model CommentsAssessmentProject.Models.Comment
+
+<div class="new-comment-wrapper">
+    <h2>New Comment</h2>
+    @using (Html.BeginForm("Post", "Home", FormMethod.Post))
+    {
+        @Html.ValidationSummary(true)
+        <div class="form-field">
+            @Html.LabelFor(m => m.Author)
+            @Html.EditorFor(m => m.Author)
+            @Html.ValidationMessageFor(m => m.Author)
+        </div>
+        <div class="form-field multiline-field">
+            @Html.LabelFor(m => m.CommentContent)
+            @Html.EditorFor(m => m.CommentContent)
+            @Html.ValidationMessageFor(m => m.CommentContent)
+        </div>
+
+        <input class="button" type="submit" value="Post" />
+    }
+</div>
+
+
+
+

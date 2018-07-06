@@ -7,12 +7,13 @@ using System.Threading.Tasks;
 
 namespace CommentsAssessmentProject.Services
 {
-    public interface ICommentsService
+    public interface ICommentService
     {
         Task<List<Comment>> GetComments();
+        Task PostComment(Comment comment);
     }
 
-    public class CommentService : ICommentsService
+    public class CommentService : ICommentService
     {
         private DbService _dbService;
 
@@ -25,6 +26,12 @@ namespace CommentsAssessmentProject.Services
         {
             List<Comment> Comments = await _dbService.Comments.OrderByDescending(x => x.PostedDateTime).ToListAsync();
             return Comments;
+        }
+
+        public async Task PostComment(Comment comment)
+        {
+            _dbService.Comments.Add(comment);
+            await _dbService.SaveChangesAsync();
         }
 
     }
