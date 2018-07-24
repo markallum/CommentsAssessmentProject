@@ -469,14 +469,14 @@ body {
 
 .wrapper {
   width: 100%;
-  padding: 0 10px;
+  padding: 0 10px 20px 10px;
 }
 
 @media (min-width: 601px) {
   .wrapper {
     width: 600px;
     margin: 0 auto;
-    padding: 0;
+    padding: 0 0 35px 0;
   }
 }
 

@@ -11,7 +11,7 @@ namespace CommentsAssessmentProject.Models
     public class CommentCore
     {
         [Required(ErrorMessage = "Please enter your message")]
-        [MaxLength(400, ErrorMessage = "Your message is too long")]
+        [MaxLength(2000, ErrorMessage = "Your message is too long")]
         [DataType(DataType.MultilineText)]
         [DisplayName("Your message")]
         public string CommentContent { get; set; }
