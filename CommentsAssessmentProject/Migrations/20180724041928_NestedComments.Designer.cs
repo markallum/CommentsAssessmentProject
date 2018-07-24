@@ -11,9 +11,10 @@ using System;
 namespace CommentsAssessmentProject.Migrations
 {
     [DbContext(typeof(DbService))]
-    partial class DbServiceModelSnapshot : ModelSnapshot
+    [Migration("20180724041928_NestedComments")]
+    partial class NestedComments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,8 +37,6 @@ namespace CommentsAssessmentProject.Migrations
                     b.Property<int?>("ParentId");
 
                     b.Property<DateTime>("PostedDateTime");
-
-                    b.Property<int>("Votes");
 
                     b.HasKey("Id");
 

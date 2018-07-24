@@ -23,21 +23,33 @@ namespace CommentsAssessmentProject.Controllers
             return View(await _commentService.GetComments());
         }
 
+
         [HttpGet]
-        public PartialViewResult Post()
+        public PartialViewResult Post(int ParentId = 0)
         {
-            Comment comment = new Comment();
+            Reply reply = new Reply();
+            reply.ParentId = ParentId;
 
             return PartialView("_AddComment");
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(Comment comment)
+        public async Task<IActionResult> Post(Reply reply)
         {
-            comment.PostedDateTime = DateTime.Now;
-
             if (ModelState.IsValid)
             {
+                Comment comment = new Comment();
+
+                comment.Author = reply.Author;
+                comment.CommentContent = reply.CommentContent;
+                comment.PostedDateTime = DateTime.Now;
+                if (reply.ParentId != 0)
+                {
+                    // Reply not a root comment, get parent and save comment as child
+                    comment.Parent = await _commentService.GetComment(reply.ParentId);
+                    comment.Parent.Children.Add(comment);
+                }
+
                 await _commentService.PostComment(comment);
                 return RedirectToAction("Index");
             }
@@ -46,8 +58,13 @@ namespace CommentsAssessmentProject.Controllers
                 // This will only be hit if user has JS turned off
                 return RedirectToAction("Error");
             }
-            
-            
+        }
+
+        [HttpPost]
+        public async Task<int> Vote(int commentId, bool positive = true)
+        {
+            int newVoteCount = await _commentService.Vote(commentId, positive);
+            return newVoteCount;
         }
 
 

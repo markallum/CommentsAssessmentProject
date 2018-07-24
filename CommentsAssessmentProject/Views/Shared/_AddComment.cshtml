@@ -1,10 +1,16 @@
-﻿@model CommentsAssessmentProject.Models.Comment
+﻿@model CommentsAssessmentProject.Models.Reply
+@if (this.ViewContext.FormContext == null)
+{
+    this.ViewContext.FormContext = new FormContext();
+}
 
-<div class="new-comment-wrapper">
+
     <h2>New Comment</h2>
     @using (Html.BeginForm("Post", "Home", FormMethod.Post))
     {
         @Html.ValidationSummary(true)
+
+        @Html.HiddenFor(m => m.ParentId)
         <div class="form-field">
             @Html.LabelFor(m => m.Author)
             @Html.EditorFor(m => m.Author)
@@ -18,7 +24,7 @@
 
         <input class="button" type="submit" value="Post" />
     }
-</div>
+
 
 
 

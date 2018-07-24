@@ -8,13 +8,9 @@ using System.Threading.Tasks;
 
 namespace CommentsAssessmentProject.Models
 {
-    public class Comment
+    public class CommentCore
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-
-        [Required(ErrorMessage ="Please enter your message")]
+        [Required(ErrorMessage = "Please enter your message")]
         [MaxLength(400, ErrorMessage = "Your message is too long")]
         [DataType(DataType.MultilineText)]
         [DisplayName("Your message")]
@@ -24,9 +20,32 @@ namespace CommentsAssessmentProject.Models
         [MaxLength(100, ErrorMessage = "Your name is too long")]
         [DisplayName("Your name")]
         public string Author { get; set; }
+    }
+
+    public class Comment : CommentCore
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
 
         [DataType(DataType.DateTime)]
         public DateTime PostedDateTime { get; set; }
+
+        public int Votes { get; set; }
+
+        public Comment Parent { get; set; }
+        public List<Comment> Children { get; set; }
+
+        public Comment()
+        {
+            Children = new List<Comment>();
+
+        }
+    }
+
+    public class Reply : CommentCore
+    {
+        public int ParentId { get; set; }
     }
 
 

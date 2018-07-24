@@ -7,6 +7,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20180706130224_ChangedColumnNamer.cs" />
     <Compile Remove="Migrations\20180706130224_ChangedColumnNamer.Designer.cs" />
+    <Compile Remove="Migrations\20180724041840_NestedComments.cs" />
+    <Compile Remove="Migrations\20180724041840_NestedComments.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

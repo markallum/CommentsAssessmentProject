@@ -1,0 +1,58 @@
+﻿@model CommentsAssessmentProject.Models.Comment
+
+<div class="post">
+
+
+    <div class="post-votes">
+        <div class="vote-button" data-id="@Model.Id" data-positive="true">
+            &#9650;
+        </div>
+        @{ 
+            string VotesColour = "";
+
+            if (Model.Votes > 0 )
+            {
+                VotesColour = "positive";
+
+            } else if (Model.Votes < 0) {
+                VotesColour = "negative";
+            }
+        }
+        <div data-id="@Model.Id" class="vote-count @VotesColour">
+            @Html.DisplayFor(c => Model.Votes)
+        </div>
+        <div class="vote-button" data-id="@Model.Id" data-positive="false">
+            &#9660;
+        </div>
+    </div>
+            <div class="post-author">
+                @Html.DisplayFor(c => Model.Author)
+            </div>
+            <div class="post-content">
+                @Html.DisplayFor(c => Model.CommentContent)
+            </div>
+
+    <div class="post-controls cf">
+        <div class="post-date left">
+            Posted on @Model.PostedDateTime.ToString("dd/MM/yyyy"), at @Model.PostedDateTime.ToString("HH:mm")
+        </div>
+        <button class="button-small right btnReply" data-id="@Model.Id" type="button">Reply</button>
+    </div>
+
+    <div data-id="@Model.Id" class="divReplyArea">
+
+    </div>
+    
+
+</div>
+
+@if (Model.Children.Count > 0)
+{
+    <div class="post-wrapper-child">
+        @foreach (var reply in Model.Children)
+        {
+            await Html.RenderPartialAsync("_Comment.cshtml", reply);
+        }
+    </div>
+}
+
